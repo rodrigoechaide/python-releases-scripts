@@ -48,7 +48,9 @@ check-variables:
 	@:$(call check_defined, VERSION, which version to release (major, minor, patch))
 
 # Run the tests.
-test:
+requirements:
+	[[ -f requirements.txt ]] && pip install requirements.txt
+test: requirements
 	python setup.py test
 
 # Build the code.
@@ -59,7 +61,7 @@ LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag: check-variables
 	git archive --prefix ${LAST_TAG}/ -o dist/${LAST_TAG}-source.tar.gz ${LAST_TAG}
 
-release: clean test-upgrade-version upgrade-version test dist
+release: test-upgrade-version upgrade-version test dist
 
 clean:
 	rm -rf dist build
