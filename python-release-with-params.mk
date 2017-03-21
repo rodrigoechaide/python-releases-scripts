@@ -21,7 +21,7 @@ TAG=--tag
 UNIT_NAME=
 TAG_NAME=${UNIT_NAME}-{new_version}
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG} --tag-name ${TAG_NAME}
-release: check-release-parameters update-release-version update-next-development-version push
+release: clean check-release-parameters update-release-version update-next-development-version push
 check-release-parameters:
 	@:$(call check_defined, UNIT_NAME, Unit name as it should be displayed in installers and source packages)
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
