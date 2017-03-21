@@ -27,15 +27,22 @@ check-release-parameters:
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
 
-update-release-version:
+update-release-version: requirements
 	bumpversion --new-version ${RELEASE_VERSION} --commit --tag --tag-name ${TAG_NAME} minor
-	python setup.py bdist
+	python setup.py sdist
 	python setup.py test
 
-update-next-development-version:
+update-next-development-version: requirements
 	bumpversion --current-version ${RELEASE_VERSION} --new-version ${NEXT_DEVELOPMENT_VERSION} --commit minor
-	python setup.py bdist
+	python setup.py sdist
 	python setup.py test
+
+requirements:
+	pip install -r requirements.txt
+test: requirements
+	python setup.py test
+dist: test
+	python setup.py sdist
 
 push:
 	git push origin master --tags
