@@ -49,8 +49,8 @@ check-variables:
 
 # Run the tests.
 requirements:
-	[[ -f requirements.txt ]] && pip install requirements.txt
-test: requirements
+	pip install requirements.txt
+test:
 	python setup.py test
 
 # Build the code.
