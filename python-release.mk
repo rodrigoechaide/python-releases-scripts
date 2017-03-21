@@ -60,6 +60,8 @@ dist:
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag: check-variables
 	git archive --prefix ${LAST_TAG}/ -o dist/${LAST_TAG}-source.tar.gz ${LAST_TAG}
+last-tag:
+	@echo ${LAST_TAG}
 
 release: test-upgrade-version upgrade-version test dist
 
