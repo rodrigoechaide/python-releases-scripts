@@ -55,3 +55,5 @@ last-tag:
 
 clean:
 	rm -rf dist build
+
+.PHONY: test
