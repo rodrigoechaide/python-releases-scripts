@@ -15,6 +15,7 @@ En el repositorio de la unidad:
 * Crear un `requirements.txt`
 * Asegurar que el archivo `setu.py` tenga la versión especificada
 * (Opcional) En caso de tener mas de un archivo que tenga la versión, crear un archivo `.bumpversion.cfg` especificando el mismo:
+
 ```
 [bumpversion]
 current_version = <versión-actual-de-desarrollo>-rc1
@@ -25,7 +26,7 @@ current_version = <versión-actual-de-desarrollo>-rc1
 
 ### Usar
 
-*Preferentemente las liberaciones se deben hacer desde Jenkins* para eso se debe agregar un job (http://jenkins.ascentio.com.ar/jenkins/job/JobsSeeds/job/python-units_seed/)[python-units_seed]
+**Preferentemente las liberaciones se deben hacer desde Jenkins** para eso se debe agregar un job [http://jenkins.ascentio.com.ar/jenkins/job/JobsSeeds/job/python-units_seed/](python-units_seed)
 
 
 #### Uso local
