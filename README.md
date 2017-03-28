@@ -26,7 +26,7 @@ current_version = <versión-actual-de-desarrollo>-rc1
 
 ### Usar
 
-**Preferentemente las liberaciones se deben hacer desde Jenkins** para eso se debe agregar un job [http://jenkins.ascentio.com.ar/jenkins/job/JobsSeeds/job/python-units_seed/](python-units_seed)
+**Preferentemente las liberaciones se deben hacer desde Jenkins** para eso se debe agregar un job en [python-units_seed](http://jenkins.ascentio.com.ar/jenkins/job/JobsSeeds/job/python-units_seed/)
 
 
 #### Uso local
