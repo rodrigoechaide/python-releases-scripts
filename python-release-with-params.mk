@@ -38,7 +38,7 @@ update-next-development-version: requirements
 	python setup.py test
 
 requirements:
-	pip install -r requirements.txt
+	test -s requirements.txt && pip install -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
 test: requirements
 	python setup.py test
 dist: test
