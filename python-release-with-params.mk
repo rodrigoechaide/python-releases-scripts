@@ -37,10 +37,13 @@ update-next-development-version: requirements
 	python setup.py sdist
 	python setup.py test
 
+PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index http://nexus.ascentio.com.ar:8082/repository/python-public/simple
 requirements:
-	test -s requirements.txt && pip install -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
-test: requirements
-	python setup.py test
+	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
+test: requirements test-requirements
+	python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
+test-requirements:
+	pip install ${PIP_ARGS} nose
 dist: test
 	python setup.py sdist
 
