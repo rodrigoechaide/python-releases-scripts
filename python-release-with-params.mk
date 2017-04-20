@@ -40,8 +40,15 @@ update-next-development-version: requirements
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index http://nexus.ascentio.com.ar:8082/repository/python-public/simple
 requirements: local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
-test: requirements test-requirements
-	python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
+
+MAIN_DIR=main
+TESTS_DIR=tests
+TEST_CMD=py.test --cov-report=xml --cov-report=html --cov ${MAIN_DIR} --junit-xml=junitreport.xml ${TESTS_DIR}
+ifdef USE_NOSE
+TEST_CMD=python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
+endif
+test: requirements test-requirements setuptools-requirements
+	${TEST_CMD}
 test-requirements:
 	pip install ${PIP_ARGS} nose
 
