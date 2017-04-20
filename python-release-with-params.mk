@@ -40,6 +40,8 @@ update-next-development-version: requirements
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index http://nexus.ascentio.com.ar:8082/repository/python-public/simple
 requirements: local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
+setuptools-requirements:
+	pip install ${PIP_ARGS} -e '.'
 
 MAIN_DIR=main
 TESTS_DIR=tests
