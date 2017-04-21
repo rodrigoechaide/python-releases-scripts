@@ -13,8 +13,8 @@ Scripts para facilitar la liberación de unidades en Python
 ### Configurar
 En el repositorio de la unidad:
 * Crear un `requirements.txt`
-* Asegurar que el archivo `setu.py` tenga la versión especificada
-* (Opcional) En caso de tener mas de un archivo que tenga la versión, crear un archivo `.bumpversion.cfg` especificando el mismo:
+* Asegurar que el archivo `setup.py` tenga la versión especificada
+* (Opcional) En caso de tener más de un archivo que tenga la versión, crear un archivo `.bumpversion.cfg` especificando el mismo:
 
 ```
 [bumpversion]
