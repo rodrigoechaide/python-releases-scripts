@@ -1,4 +1,3 @@
-
 # Check that given variables are set and all have non-empty values,
 # die with an error otherwise.
 #
@@ -28,7 +27,7 @@ check-release-parameters:
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
 
 update-release-version: requirements
-	bumpversion --new-version ${RELEASE_VERSION} --commit --tag --tag-name ${TAG_NAME} minor
+	bumpversion --new-version ${RELEASE_VERSION} --commit --tag minor
 	python setup.py sdist
 	python setup.py test
 
