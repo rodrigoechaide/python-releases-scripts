@@ -17,8 +17,6 @@ package:
 	python setup.py bdist
 
 TAG=--tag
-UNIT_NAME=
-TAG_NAME=${UNIT_NAME}-{new_version}
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
 release: clean check-release-parameters update-release-version update-next-development-version push
 check-release-parameters:
