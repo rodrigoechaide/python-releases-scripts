@@ -56,6 +56,9 @@ dist: test
 push:
 	git push origin master --tags
 
+upload-to-nexus:
+	python setup.py --command-packages fixed_upload sdist fixed_upload -r http://nexus.ascentio.com.ar:8082/nexus3/repository/pypi-playground/
+
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
 	git archive --prefix ${LAST_TAG}/ -o dist/${LAST_TAG}-source.tar.gz ${LAST_TAG}
