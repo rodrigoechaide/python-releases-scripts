@@ -33,7 +33,8 @@ update-next-development-version: requirements
 	python setup.py sdist
 	python setup.py test
 
-PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index http://nexus.ascentio.com.ar:8082/repository/python-public/simple
+PYPI_INDEX=http://nexus.ascentio.com.ar:8082/nexus3/repository/python-public/simple
+PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
 setuptools-requirements:
