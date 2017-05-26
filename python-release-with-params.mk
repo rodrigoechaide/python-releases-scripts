@@ -36,9 +36,9 @@ update-next-development-version: requirements
 PYPI_INDEX=http://nexus.ascentio.com.ar:8082/nexus3/repository/python-public/simple
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
-	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
+	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "INFO: requirements.txt does not exist"; }
 setuptools-requirements:
-	pip install ${PIP_ARGS} -e '.[local]'
+	grep -qe 'local' setup.py && pip install ${PIP_ARGS} -e '.[local]' || { echo "INFO: setup.py does not contain extra_requires local"; }
 
 MAIN_DIR=main
 TESTS_DIR=tests
