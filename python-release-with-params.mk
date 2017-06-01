@@ -50,7 +50,7 @@ test: requirements setuptools-requirements
 	${TEST_CMD}
 
 local-requirements:
-	test -s ${CURDIR}/requirements-local.txt && pip install ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
+	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
 	python setup.py sdist
 
