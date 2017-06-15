@@ -50,7 +50,7 @@ test: requirements setuptools-requirements
 	${TEST_CMD}
 
 pylint:
-	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || true
+	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || { echo "WARN: PyLint exit code different to 0: $?"; }
 
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
