@@ -55,6 +55,8 @@ pylint:
 flake8:
 	flake8 --config=setup.cfg ${MAIN_DIR} > flake8.out || { echo "WARN: Flake8 exit code different to 0: $?"; }
 
+static-analysis: pylint flake8
+
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
