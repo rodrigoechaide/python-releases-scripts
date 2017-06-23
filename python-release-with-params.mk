@@ -33,7 +33,8 @@ update-next-development-version: requirements
 	python setup.py sdist
 	python setup.py test
 
-PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index http://nexus.ascentio.com.ar:8082/repository/python-public/simple
+PYPI_INDEX=http://nexus.ascentio.com.ar/nexus/repository/python-public/simple
+PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
 setuptools-requirements:
@@ -48,8 +49,16 @@ endif
 test: requirements setuptools-requirements
 	${TEST_CMD}
 
+pylint:
+	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || { echo "WARN: PyLint exit code different to 0: $?"; }
+
+flake8:
+	flake8 --config=setup.cfg ${MAIN_DIR} > flake8.out || { echo "WARN: Flake8 exit code different to 0: $?"; }
+
+static-analysis: pylint flake8
+
 local-requirements:
-	test -s ${CURDIR}/requirements-local.txt && pip install ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
+	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
 	python setup.py sdist
 
