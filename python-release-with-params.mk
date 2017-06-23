@@ -19,6 +19,11 @@ package:
 TAG=--tag
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
 release: clean check-release-parameters update-release-version update-next-development-version push
+
+pre-release: clean check-release-parameters update-release-version
+
+post-release: update-next-development-version push package-last-tag
+
 check-release-parameters:
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
@@ -64,6 +69,11 @@ dist: test
 
 push:
 	git push origin master --tags
+
+# REPO: snapshots|releases
+REPO=snapshots
+upload-to-nexus:
+	python setup.py --command-packages fixed_upload sdist fixed_upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/
 
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
