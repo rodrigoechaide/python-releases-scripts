@@ -19,6 +19,11 @@ package:
 TAG=--tag
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
 release: clean check-release-parameters update-release-version update-next-development-version push
+
+pre-release: clean check-release-parameters update-release-version
+
+post-release: update-next-development-version push package-last-tag
+
 check-release-parameters:
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
