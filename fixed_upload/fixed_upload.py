@@ -139,10 +139,10 @@ class fixed_upload(orig):
             if self.show_response:
                 msg = '\n'.join(('-' * 75, result.read(), '-' * 75))
                 self.announce(msg, log.INFO)
-        except socket.error, e:
+        except socket.error as e:
             self.announce(str(e), log.ERROR)
             return
-        except HTTPError, e:
+        except HTTPError as e:
             status = e.code
             reason = e.msg
 
