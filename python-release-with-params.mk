@@ -14,7 +14,7 @@ __check_defined = \
 RELEASE_VERSION=
 NEXT_DEVELOPMENT_VERSION=
 package:
-	python setup.py bdist
+	$(shell test -e setup.py && python setup.py bdist)
 
 TAG=--tag
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
@@ -53,7 +53,7 @@ ifdef USE_NOSE
 TEST_CMD=python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
 endif
 test: requirements setuptools-requirements
-	${TEST_CMD}
+	$(shell test -e setup.py && ${TEST_CMD})
 
 pylint:
 	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || { echo "WARN: PyLint exit code different to 0: $?"; }
@@ -66,7 +66,7 @@ static-analysis: pylint flake8
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
-	python setup.py sdist
+	$(shell test -e setup.py && python setup.py sdist)
 
 push:
 	git push origin master --tags
