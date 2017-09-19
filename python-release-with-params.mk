@@ -21,29 +21,30 @@ BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
 release: clean check-release-parameters update-release-version update-next-development-version push
 
 pre-release: clean check-release-parameters update-release-version
-
 post-release: update-next-development-version push package-last-tag
 
 check-release-parameters:
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
 
-update-release-version: requirements
+update-release-version: requirements bump-release-version
+	$(shell test -e setup.py && python setup.py sdist)
+	$(shell test -e setup.py && python setup.py test)
+bump-release-version:
 	bumpversion --new-version ${RELEASE_VERSION} --commit --tag minor
-	python setup.py sdist
-	python setup.py test
 
-update-next-development-version: requirements
+bump-next-development-version:
 	bumpversion --current-version ${RELEASE_VERSION} --new-version ${NEXT_DEVELOPMENT_VERSION} --commit minor
-	python setup.py sdist
-	python setup.py test
+update-next-development-version: requirements bump-next-development-version
+	$(shell test -e setup.py && python setup.py sdist)
+	$(shell test -e setup.py && python setup.py test)
 
 PYPI_INDEX=http://nexus.ascentio.com.ar/nexus/repository/python-public/simple
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
 setuptools-requirements:
-	pip install ${PIP_ARGS} -e '.[local]'
+	test -s setup.py && pip install ${PIP_ARGS} -e '.[local]' || { echo "WARN: setup.py does not exist"; }
 
 MAIN_DIR=main
 TESTS_DIR=tests
