@@ -78,6 +78,7 @@ upload-to-nexus:
 
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
+	mkdir -p dist
 	git archive --prefix ${LAST_TAG}/ -o dist/${LAST_TAG}-source.tar.gz ${LAST_TAG}
 last-tag:
 	@echo ${LAST_TAG}
