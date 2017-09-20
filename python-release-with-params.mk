@@ -14,7 +14,8 @@ __check_defined = \
 RELEASE_VERSION=
 NEXT_DEVELOPMENT_VERSION=
 package:
-	$(shell test -e setup.py && python setup.py bdist)
+	test -e setup.py && python setup.py bdist || { echo "WARN: no setup.py, no bdist"; }
+
 
 TAG=--tag
 BUMPVERSION_DEFAULT_ARGS=${SERIALIZE} ${PARSE} --commit ${TAG}
@@ -28,16 +29,16 @@ check-release-parameters:
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
 
 update-release-version: requirements bump-release-version
-	$(shell test -e setup.py && python setup.py sdist)
-	$(shell test -e setup.py && python setup.py test)
+	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no sdist"; }
+	test -e setup.py && python setup.py test || { echo "WARN: no setup.py, no test"; }
 bump-release-version:
 	bumpversion --new-version ${RELEASE_VERSION} --commit --tag minor
 
 bump-next-development-version:
 	bumpversion --current-version ${RELEASE_VERSION} --new-version ${NEXT_DEVELOPMENT_VERSION} --commit minor
 update-next-development-version: requirements bump-next-development-version
-	$(shell test -e setup.py && python setup.py sdist)
-	$(shell test -e setup.py && python setup.py test)
+	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no sdist"; }
+	test -e setup.py && python setup.py test || { echo "WARN: no setup.py, no test"; }
 
 PYPI_INDEX=http://nexus.ascentio.com.ar/nexus/repository/python-public/simple
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
