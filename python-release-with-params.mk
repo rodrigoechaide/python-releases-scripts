@@ -53,7 +53,7 @@ ifdef USE_NOSE
 TEST_CMD=python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
 endif
 test: requirements setuptools-requirements
-	$(shell test -e setup.py && ${TEST_CMD})
+	test -e setup.py && ${TEST_CMD} || { echo "WARN: no setup.py, no dist"; }
 
 pylint:
 	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || { echo "WARN: PyLint exit code different to 0: $?"; }
@@ -66,7 +66,7 @@ static-analysis: pylint flake8
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
-	$(shell test -e setup.py && python setup.py sdist)
+	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no test"; }
 
 push:
 	git push origin master --tags
