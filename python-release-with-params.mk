@@ -77,6 +77,9 @@ REPO=snapshots
 upload-to-nexus:
 	python setup.py --command-packages fixed_upload sdist fixed_upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/
 
+upload-to-nexus-python3:
+	python setup.py sdist upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/
+
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
 	mkdir -p dist
