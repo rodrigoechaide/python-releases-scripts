@@ -69,8 +69,9 @@ local-requirements:
 dist: test
 	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no test"; }
 
+BRANCH=master
 push:
-	git push origin master --tags
+	git push origin ${BRANCH} --tags
 
 # REPO: snapshots|releases
 REPO=snapshots
