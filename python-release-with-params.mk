@@ -67,19 +67,19 @@ static-analysis: pylint flake8
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
 dist: test
-	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no test"; }
+	test -e setup.py && python setup.py sdist bdist_wheel || { echo "WARN: no setup.py, no test"; }
 
 BRANCH=master
 push:
 	git push origin ${BRANCH} --tags
 
+install-twine:
+	pip install twine==1.9.1
+
 # REPO: snapshots|releases
 REPO=snapshots
-upload-to-nexus:
-	python setup.py --command-packages fixed_upload sdist fixed_upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/
-
-upload-to-nexus-python3:
-	python setup.py sdist upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/
+upload-to-nexus: install-twine dist
+	twine upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/ dist/*
 
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
