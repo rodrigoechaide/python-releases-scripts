@@ -73,13 +73,13 @@ BRANCH=master
 push:
 	git push origin ${BRANCH} --tags
 
-install-twine:
-	pip install twine==1.9.1
+install-rwt:
+	pip install rwt==3.1
 
 # REPO: snapshots|releases
 REPO=snapshots
-upload-to-nexus: install-twine dist
-	twine upload -r http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/ dist/*
+upload-to-nexus: install-rwt dist
+	rwt -q twine==1.9.1 -- -m twine upload -r ${REPO} dist/*
 
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
 package-last-tag:
