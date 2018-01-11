@@ -13,8 +13,8 @@ __check_defined = \
 
 RELEASE_VERSION=
 NEXT_DEVELOPMENT_VERSION=
-package:
-	test -e setup.py && python setup.py bdist || { echo "WARN: no setup.py, no bdist"; }
+package: setup.py
+	python setup.py bdist
 
 
 TAG=--tag
@@ -28,24 +28,24 @@ check-release-parameters:
 	@:$(call check_defined, RELEASE_VERSION, which version to RELEASE)
 	@:$(call check_defined, NEXT_DEVELOPMENT_VERSION, which version to NEXT_DEVELOPMENT_VERSION)
 
-update-release-version: requirements bump-release-version
-	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no sdist"; }
-	test -e setup.py && python setup.py test || { echo "WARN: no setup.py, no test"; }
+update-release-version: setup.py requirements bump-release-version
+	python setup.py sdist
+	python setup.py test
 bump-release-version:
 	bumpversion --new-version ${RELEASE_VERSION} --commit --tag minor
 
 bump-next-development-version:
 	bumpversion --current-version ${RELEASE_VERSION} --new-version ${NEXT_DEVELOPMENT_VERSION} --commit minor
-update-next-development-version: requirements bump-next-development-version
-	test -e setup.py && python setup.py sdist || { echo "WARN: no setup.py, no sdist"; }
-	test -e setup.py && python setup.py test || { echo "WARN: no setup.py, no test"; }
+update-next-development-version: requirements setup.py bump-next-development-version
+	python setup.py sdist
+	python setup.py test
 
 PYPI_INDEX=http://nexus.ascentio.com.ar/nexus/repository/python-public/simple
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
 	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
-setuptools-requirements:
-	test -s setup.py && pip install ${PIP_ARGS} -e '.[local]' || { echo "WARN: setup.py does not exist"; }
+setuptools-requirements: setup.py
+	pip install ${PIP_ARGS} -e '.[local]'
 
 MAIN_DIR=main
 TESTS_DIR=tests
@@ -53,8 +53,11 @@ TEST_CMD=python setup.py test
 ifdef USE_NOSE
 TEST_CMD=python setup.py nosetests --with-coverage --with-xunit --cover-xml --cover-html
 endif
-test: requirements setuptools-requirements
-	test -e setup.py && ${TEST_CMD} || { echo "WARN: no setup.py, no dist"; }
+test: requirements setup.py setuptools-requirements
+	${TEST_CMD}
+
+setup.py:
+	$(error setup.py does not exist!)
 
 pylint:
 	pylint --rcfile=setup.cfg ${MAIN_DIR} > pylint.out || { echo "WARN: PyLint exit code different to 0: $?"; }
@@ -66,8 +69,8 @@ static-analysis: pylint flake8
 
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
-dist: test
-	test -e setup.py && python setup.py sdist bdist_wheel || { echo "WARN: no setup.py, no test"; }
+dist: setup.py test
+	python setup.py sdist bdist_wheel
 
 BRANCH=master
 push:
