@@ -1,0 +1,12 @@
+*.pyc
+.idea/
+.eggs
+*.egg-info
+dist
+*~
+.coverage
+htmlcov/
+coverage.xml
+junitreport.xml
+pylint-report.txt
+results
