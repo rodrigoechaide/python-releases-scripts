@@ -6,10 +6,10 @@ help:
 	@echo ""
 
 test:
-		robot --outputdir results tests
+	robot --outputdir results tests
 
 rfhub:
-		rwt robotframework-hub -- -m rfhub tests
+	rwt robotframework-hub -- -m rfhub tests
 
 requirements:
 	pip install -r requirements.txt
