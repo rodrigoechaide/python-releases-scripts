@@ -69,8 +69,12 @@ static-analysis: pylint flake8
 
 local-requirements:
 	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
-dist: setup.py test
-	python setup.py sdist bdist_wheel
+dist: setup.py test sdist bdist_wheel
+sdist: setup.py test
+	python setup.py sdist
+bdist_wheel: setup.py test
+	# Some units require sudo permissions to created bdist, while we fix that, we just warn.
+	python setup.py bdist_wheel || echo 'WARN: could not create bdist_wheel'
 
 BRANCH=master
 push:
