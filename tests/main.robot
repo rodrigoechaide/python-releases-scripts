@@ -44,3 +44,19 @@ Should fail with package if there is no setup.py
     Log  ${output}
     Should Not Be Equal As Integers  ${rc}  0
     Should Contain Any  ${output}  setup.py does not exist
+
+Should not fail with dist if bdist_wheel fail
+    ${rc}  ${output}=  Execute Make  fail-install  dist
+
+    Log  ${output}
+    Should Be Equal As Integers  ${rc}  0
+    Should Contain Any  ${output}  WARN: could not create bdist_wheel
+
+Should execute test sdist and bdist_wheel when dist
+    ${rc}  ${output}=  Execute Make  fail-install  dist
+
+    Log  ${output}
+    Should Be Equal As Integers  ${rc}  0
+    Should Contain Any  ${output}  running pytest
+    Should Contain Any  ${output}  running sdist
+    Should Contain Any  ${output}  running bdist_wheel
