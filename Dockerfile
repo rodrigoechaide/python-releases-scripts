@@ -1,6 +1,6 @@
 FROM python:3.7.4-alpine3.10
 
-RUN apk add --no-cache make=4.2.1-r2\
+RUN apk add --no-cache make=4.2.1-r2 \
 		 gcc=8.3.0-r0 \
 		 libc-dev=0.7.1-r0
 
