@@ -1,4 +1,4 @@
-# release-me-python docker image [![Build Status](http://jenkins.ascentio.com.ar/jenkins/job/asc-comp/job/release-me-python_image/badge/icon)](http://jenkins.ascentio.com.ar/jenkins/job/asc-comp/job/release-me-python_image/)
+# release-me-python docker image [![Build Status](https://jenkins-sabiamar.ascentio.com.ar/job/devops/job/release-me-python/badge/icon)](https://jenkins-sabiamar.ascentio.com.ar/job/devops/job/release-me-python/)
 
 Scripts to facilitate python units and libraries releases. Now with Docker Support! Docker builded image is aimed to be used in the pipeline process of build, test and release of python units and libraries. Jenkins will use this image as a base image in order to run the pipeline into.
 
