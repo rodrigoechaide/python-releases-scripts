@@ -1,3 +1,7 @@
+IMAGE=asc-comp/release-me-python
+IMAGE_VERSION=1.0.0
+
+include inc/docker.mk
 
 help:
 	@echo "Rules:"
@@ -13,5 +17,3 @@ rfhub:
 
 requirements:
 	pip install -r requirements.txt
-
-

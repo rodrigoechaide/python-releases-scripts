@@ -1,0 +1,10 @@
+{
+  "generator-asc-docker": {
+    "promptValues": {
+      "name": "release-me-python",
+      "group": "asc-comp",
+      "version": "0.0.1"
+    },
+    "generator-version": "0.5.0-SNAPSHOT"
+  }
+}
