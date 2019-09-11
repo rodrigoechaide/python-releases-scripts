@@ -1,5 +1,5 @@
 IMAGE=asc-comp/release-me-python
-IMAGE_VERSION=1.0.0
+IMAGE_VERSION=1.0.1
 
 include inc/docker.mk
 

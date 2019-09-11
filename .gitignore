@@ -2,6 +2,7 @@
 -.idea/
 -.eggs
 -*.egg-info
+.env
 -dist
 -*~
 -.coverage
