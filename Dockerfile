@@ -11,6 +11,7 @@ RUN pip install setuptools==41.2.0 \
 		pylint==2.3.1 \
 		isort==4.2.15 \
 		flake8==3.7.8 \
-		bumpversion==0.5.3
+		bumpversion==0.5.3 \
+		rwt==3.1
 
-COPY . /inc/release-me-python
+COPY *.mk /inc/release-me-python/
