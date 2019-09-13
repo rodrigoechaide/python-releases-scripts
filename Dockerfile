@@ -3,7 +3,8 @@ FROM python:3.7.4-alpine3.10
 RUN apk add --no-cache gcc=8.3.0-r0 \
 		 git=2.22.0-r0 \
 		 make=4.2.1-r2 \
-		 libc-dev=0.7.1-r0
+		 libc-dev=0.7.1-r0 \
+		 openssh-client=8.0_p1-r0
 
 WORKDIR /inc/release-me-python/
 
