@@ -1,5 +1,11 @@
 INTERNAL_REGISTRY_URL=nexus.ascentio.com.ar:7443
 
+ifndef TARGET
+	IMAGE_VERSION := $(shell grep -e "VERSION=" Dockerfile | cut -d ' ' -f 2 | cut -d '=' -f 2 | cut -d '"' -f 2)
+else
+	IMAGE_VERSION := $(shell grep -e "TARGET=\"${TARGET}\"" Dockerfile | cut -d ' ' -f 2 | cut -d '=' -f 2 | cut -d '"' -f 2)
+endif
+
 ifndef IMAGE_VERSION
 IMAGE_VERSION=latest
 endif
@@ -7,17 +13,33 @@ endif
 pre-build-image:
 
 pull-images:
-	@echo "Trying to pull FROM image from internal registry: ${INTERNAL_REGISTRY_URL}"
-	grep -e FROM Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker pull ${INTERNAL_REGISTRY_URL}/{} || echo \"{} image not found on ${INTERNAL_REGISTRY_URL}\""
-	@echo "Trying to re-tag images from registry as local"
-	grep -e FROM Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker tag ${INTERNAL_REGISTRY_URL}/{} {} || echo \"${INTERNAL_REGISTRY_URL}/{} image not found, not re-tagging\""
+	@if [ -z $(TARGET) ] ; \
+	then \
+		echo "Trying to pull FROM image from internal registry: ${INTERNAL_REGISTRY_URL}"; \
+		grep -e FROM Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker pull ${INTERNAL_REGISTRY_URL}/{} || echo \"{} image not found on ${INTERNAL_REGISTRY_URL}\""; \
+		echo "Trying to re-tag images from registry as local"; \
+		grep -e FROM Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker tag ${INTERNAL_REGISTRY_URL}/{} {} || echo \"${INTERNAL_REGISTRY_URL}/{} image not found, not re-tagging\""; \
+	else \
+		echo "Trying to pull FROM image from internal registry: ${INTERNAL_REGISTRY_URL}"; \
+		grep -e "AS ${TARGET}" Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker pull ${INTERNAL_REGISTRY_URL}/{} || echo \"{} image not found on ${INTERNAL_REGISTRY_URL}\""; \
+		echo "Trying to re-tag images from registry as local"; \
+		grep -e "AS ${TARGET}" Dockerfile | cut -d ' ' -f 2 | xargs -I {} bash -c "docker tag ${INTERNAL_REGISTRY_URL}/{} {} || echo \"${INTERNAL_REGISTRY_URL}/{} image not found, not re-tagging\""; \
+	fi;
 
+#@echo 'TARGET is not defined, multistage-build aborted.'
+multistage-build:
+	@if [ -z $(TARGET) ] ; \
+	then \
+		echo 'TARGET is not defined, multistage-build aborted.' ; \
+	else \
+		build-image ; \
+	fi;
 
 build-image-locally:
 	docker build ${BUILD_OPTS} --build-arg https_proxy=${HTTPS_PROXY} --build-arg http_proxy=${HTTP_PROXY} \
 					--label builton=$$(hostname) --label builtby=$$(whoami) \
 					--label commit=$$(echo $$(git rev-parse HEAD)$$(git diff --quiet || echo '-dirty')) \
-					--tag ${IMAGE}:${IMAGE_VERSION} .
+					--target ${TARGET} --tag ${IMAGE}:${IMAGE_VERSION} .
 build-image: pull-images pre-build-image build-image-locally
 build-image-with-local-cache: pull-images pre-build-image
 	$(MAKE) build-image HTTP_PROXY=http://172.17.0.1:3128 HTTPS_PROXY=http://172.17.0.1:3128

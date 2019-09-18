@@ -7,10 +7,10 @@ Scripts to facilitate python units and libraries releases. Now with Docker Suppo
 * Source Code packages generation.
 * Release automation, version upgrades and tags management.
 
-## Cómo usarlo en mi unidad?
+## How to use it in my unit?
 
-### Configurar
-En el repositorio de la unidad:
+### Configure
+In the unit repository:
 * Create a `requirements.txt` file.
 * Make sure that `setup.py` file has the specified version.
 * (Optional) In case of having more than one file with the version string, create a `.bumpversion.cfg` file with the following content:
