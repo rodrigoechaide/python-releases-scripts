@@ -43,9 +43,9 @@ update-next-development-version: requirements setup.py bump-next-development-ver
 PYPI_INDEX=http://nexus.ascentio.com.ar/nexus/repository/python-public/simple
 PIP_ARGS=--trusted-host nexus.ascentio.com.ar --index ${PYPI_INDEX}
 requirements: setuptools-requirements local-requirements
-	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt || { echo "WARN: requirements.txt does not exist"; }
+	test -s ${CURDIR}/requirements.txt && pip install ${PIP_ARGS} -r requirements.txt --user || { echo "WARN: requirements.txt does not exist"; }
 setuptools-requirements: setup.py
-	pip install ${PIP_ARGS} -e '.[local]'
+	pip install ${PIP_ARGS} -e '.[local]' --user
 
 MAIN_DIR=main
 TESTS_DIR=tests
@@ -68,7 +68,7 @@ flake8:
 static-analysis: pylint flake8
 
 local-requirements:
-	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt || { echo "INFO: requirements-local.txt does not exist"; }
+	test -s ${CURDIR}/requirements-local.txt && pip install --exists-action=w ${PIP_ARGS} -r requirements-local.txt --user || { echo "INFO: requirements-local.txt does not exist"; }
 dist: setup.py test sdist bdist_wheel
 sdist: setup.py test
 	python setup.py sdist
@@ -81,7 +81,7 @@ push:
 	git push origin ${BRANCH} --tags
 
 install-rwt:
-	pip install rwt==3.1
+	pip install rwt==3.1 --user
 
 # REPO: snapshots|releases
 REPO=snapshots
