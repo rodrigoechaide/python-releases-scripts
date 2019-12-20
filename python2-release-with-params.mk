@@ -84,7 +84,7 @@ install-rwt:
 REPO=snapshots
 # ARTIFACT_REGISTRY__CREDENTIALS_USR, ARTIFACT_REGISTRY_CREDENTIALS_PSW and ARTIFACT_REGISTRY_URL must be configured inside the system runing the build as ENV VARS
 upload-to-nexus: install-rwt dist
-	rwt -q twine==1.9.1 -- -m twine upload --repository http://nexus.ascentio.com.ar/nexus/repository/pypi-${REPO}/ dist/*
+	rwt -q twine==1.9.1 -- -m twine upload --repository ${REPO} dist/*
 
 
 LAST_TAG=`git tag --sort=-committerdate | head -n 1`
